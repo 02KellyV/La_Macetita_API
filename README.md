@@ -1,21 +1,26 @@
-Usage
+# Usage
 
 Call it with your Express app:
 
+~~~
 // Create an Express app
 var app = require('express')();
  
 // Serve README.md on GET '/'
 require('express-readme')(app);
+~~~
 
-Options
+# Options
 
 You can pass three options:
 
     filename: The path to the README you want to serve. Can be relative or absolute.
+    
     routes: The routes the package should respond to. Can be a string or array of routes.
+    
     processorOpts: If you know the processor used for your markup and want to customize the output it produces (i.e. the package), then pass this with the desired options.
 
+~~~
 // Create an Express app
 var app = require('express')();
  
@@ -24,13 +29,15 @@ require('express-readme')(app, {
   filename: 'SAMPLE.md',
   routes: ['/', '/readme']
 });
-
-Markup support
+~~~
+# Markup support
 
 For now, the package only supports following markup formats:
 
     Markdown (.markdown, .mdown, .mkdn, .md)
+    
     Textile (.textile)
+    
     AsciiDoc (.asciidoc, .adoc, .asc)
 
 Other formats will be added as well, to make it match with the others that you can use with GitHub.
@@ -43,12 +50,10 @@ There are some limitations when using this package, which include:
     If the markup for your README isn't implemented, an error will be thrown.
     The operations are performed in a synchronous way.
 
-TO-DO
-
+# TODO
     Support other formats to emulate GitHub's true README rendering.
     Implement asynchronous operations whenever possible.
     Test with older Express versions.
 
-License
-
-This project is released under the MIT License.
+# License
+### This project is released under the MIT License.
