@@ -1,32 +1,34 @@
 require('./config/database.js');
+
+//access vars inside .env
 require('dotenv').config();
 const harvestApiRouter = require('./routes/api/harvests'),
-harvestRouter = require('./routes/views/harvests'),
 express = require('express'),
 bodyParser = require('body-parser'),
 mongoose = require('mongoose'),
 path = require('path'),
 port = 3000,
+cors = require("cors"),
+productsApiRouter = require('./routes/api/products')
 
 // init app 
 app = express();
 
-app.use(express.json());
-
 // middleware
 //send req as json, express can read
 app.use(bodyParser.json());
+
+app.use(cors());
+
 // for data type app/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true })); 
-
 
 //static files, path join concat dir and where run the process
 app.use("/static", express.static(path.join(__dirname, "public")));
 
 //routes
 app.use('/api/harvests', harvestApiRouter);
-
-app.use('/harvests', harvestRouter);
+app.use('/api/products', productsApiRouter);
 
 //Example: 
 //app.get('/', (req, res) => res.send('Hello World!'));

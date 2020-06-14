@@ -43,7 +43,7 @@ There are some limitations when using this package, which include:
     If the markup for your README isn't implemented, an error will be thrown.
     The operations are performed in a synchronous way.
 
-TODO
+TO-DO
 
     Support other formats to emulate GitHub's true README rendering.
     Implement asynchronous operations whenever possible.
