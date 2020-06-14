@@ -6,6 +6,8 @@ class ProductsService {
 	}
     getProductSearch({ search, page, limit }) {
 		return Products.find({$text: {$search: search}})
+		.populate("harvest")
+		.populate("category")
 		.skip((page-1) * limit)
 		.limit(limit);
 	}
