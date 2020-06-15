@@ -5,7 +5,8 @@ mongoose.connect(process.env.DATABASE_URL || "mongodb+srv://Admin:Cifhi381@clust
 	{
 		useNewUrlParser: true, 
 		useUnifiedTopology: true,
-		useCreateIndex: true
+		useCreateIndex: true,
+		useFindAndModify: false
 	});
 
 

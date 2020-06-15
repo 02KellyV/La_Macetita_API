@@ -19,11 +19,11 @@ router.get('/', async function(req,res,next) {
   });
 
 //GET BY ID
-router.get('/:categoriesId', async function(req,res,next) {
-  const { categoriesId } = req.params;
+router.get('/:categoryId', async function(req,res,next) {
+  const { categoryId } = req.params;
 
   try{
-    const category = await categoriesService.getCategory({ categoriesId });
+    const category = await categoriesService.getCategory({ categoryId });
     res.status(200)
       .json({
         data: category,
@@ -35,7 +35,7 @@ router.get('/:categoriesId', async function(req,res,next) {
 });
 
 //POST
-router.post('/', async function(req,res,next) {
+router.post('/', auth, async function(req,res,next) {
   const { body: category } = req; //when send data 
 
   try {
@@ -51,12 +51,12 @@ router.post('/', async function(req,res,next) {
 });
 
 //UPDATE
-router.put('/:categoryId', async function(req,res,next) {
+router.put('/:categoryId', auth, async function(req,res,next) {
   const { categoryId } = req.params;
   const { body: category } = req; //when send data
 
   try {
-    const updatedCategory = await categoriesService.updateCategory({ categoriesId, category });
+    const updatedCategory = await categoriesService.updateCategory({ categoryId, category });
     res.status(200)
       .json({
         data: updatedCategory,
@@ -68,7 +68,7 @@ router.put('/:categoryId', async function(req,res,next) {
 });
 
 //DELETE
-router.delete('/:categoryId', async function(req,res,next) {
+router.delete('/:categoryId', auth, async function(req,res,next) {
   const { categoryId } = req.params;
 
   try {

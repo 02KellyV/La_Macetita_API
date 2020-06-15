@@ -3,14 +3,15 @@ require("./config/database.js");
 //access vars inside .env
 require("dotenv").config();
 const harvestApiRouter = require("./routes/api/harvests"),
-  express = require("express"),
-  bodyParser = require("body-parser"),
-  mongoose = require("mongoose"),
-  path = require("path"),
-  port = 3000,
-  cors = require("cors"),
-  productsApiRouter = require("./routes/api/products"),
-  authApiRouter = require("./routes/api/auth");
+productsApiRouter = require("./routes/api/products"),
+categoriesApiRouter = require("./routes/api/categories"),
+authApiRouter = require("./routes/api/auth"),
+express = require("express"),
+bodyParser = require("body-parser"),
+mongoose = require("mongoose"),
+path = require("path"),
+cors = require("cors");
+
 
 // init app
 app = express();
@@ -30,6 +31,7 @@ app.use("/static", express.static(path.join(__dirname, "public")));
 //routes
 app.use("/api/harvests", harvestApiRouter);
 app.use("/api/products", productsApiRouter);
+app.use("/api/categories", categoriesApiRouter);
 app.use("/api/auth", authApiRouter);
 
 //Example:

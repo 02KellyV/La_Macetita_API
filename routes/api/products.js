@@ -39,7 +39,7 @@ router.get('/:productId', async function(req,res,next) {
 });
 
 //POST
-router.post('/', async function(req,res,next) {
+router.post('/', auth, async function(req,res,next) {
   const { body: product } = req; //when send data 
 
   try {
@@ -55,7 +55,7 @@ router.post('/', async function(req,res,next) {
 });
 
 //UPDATE
-router.put('/:productId', async function(req,res,next) {
+router.put('/:productId', auth, async function(req,res,next) {
   const { productId } = req.params;
   const { body: product } = req; //when send data
 
@@ -72,7 +72,7 @@ router.put('/:productId', async function(req,res,next) {
 });
 
 //DELETE
-router.delete('/:productId', async function(req,res,next) {
+router.delete('/:productId', auth, async function(req,res,next) {
   const { productId } = req.params;
 
   try {
