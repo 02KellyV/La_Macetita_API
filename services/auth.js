@@ -12,6 +12,7 @@ class ProductsService {
     if (valid) {
       return { 
         token: await user.generateJWT(),
+        name: user.name,
         email: user.email,
         id: user._id
       };
