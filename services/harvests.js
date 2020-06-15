@@ -1,23 +1,38 @@
-const harvestMocks = require('../utils/mocks/harvests');
+const {Harvests, Users} = require('../models');
 
 class HarvestsService {
 	constructor() {
 
 	}
-	getHarvests({ tags }) {
-		return	Promise.resolve(harvestMocks);
+
+	//GET
+	getHarvests() {
+		return Harvests.find();
 	}
+
+	//GET BY ID
 	getHarvest({ harvestId }) {
-		return	Promise.resolve(harvestMocks[0]);
+		return Harvests.findById(harvestId);		
 	}
-	createHarvests({ harvest }) {
-		return	Promise.resolve(harvestMocks[0]);
+
+	//POST
+	async createHarvests({ harvest, user }) {
+		harvest.owner = user.id;
+		const newHarvest = await Harvests.create(harvest);
+		const updateUser = await Users.findById(user.id);
+		updateUser.harvests.push(newHarvest._id);
+		updateUser.save();
+		return newHarvest;
 	}
+
+	//PUT
 	updateHarvests({ harvestId, harvest }) {
-		return	Promise.resolve(harvestMocks[0]);
+		return Harvests.findByIdAndUpdate(harvestId, harvest);
 	}
-	deleteHarvests({ tags }) {
-		return	Promise.resolve(harvestMocks[0]);
+
+	//DELETE
+	deleteHarvests({ harvestId }) {
+		return Harvests.findByIdAndDelete(harvestId);
 	}
 }
 

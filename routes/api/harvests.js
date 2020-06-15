@@ -2,13 +2,12 @@ const express = require('express');
 const router = express.Router();
 const HarvestsService = require('../../services/harvests');
 const harvestsService = new HarvestsService();
+const auth = require("../../utils/guard");
+
 
 router.get('/', async function(req,res,next) {
-  const { tags } = req.query;
-  console.log('req', req.query);
-
   try {
-    const harvests = await harvestsService.getHarvests({ tags });
+    const harvests = await harvestsService.getHarvests();
     res.status(200)
       .json({
         data: harvests,
@@ -37,12 +36,11 @@ router.get('/:harvestId', async function(req,res,next) {
 });
 
 
-router.post('/', async function(req,res,next) {
-  const { body: harvest } = req; //when send data 
-  console.log('req', req.body);
+router.post('/', auth, async function(req,res,next) {
+  const { body: harvest, user } = req; //when send data
 
   try {
-    const createdHarvests = await harvestsService.createHarvests({ harvest });
+    const createdHarvests = await harvestsService.createHarvests({ harvest, user });
     res.status(201)
       .json({
         data: createdHarvests,
