@@ -11,7 +11,7 @@ router.get('/', async function(req,res,next) {
     res.status(200)
       .json({
         data: harvests,
-        message: 'Products listed'
+        message: 'Harvests listed'
       });
   } catch(err) {
     next(err);
@@ -21,14 +21,13 @@ router.get('/', async function(req,res,next) {
 //GET BY ID
 router.get('/:harvestId', async function(req,res,next) {
   const { harvestId } = req.params;
-  console.log('req', req.params);
 
   try{
     const harvest = await harvestsService.getHarvest({ harvestId });
     res.status(200)
       .json({
         data: harvest,
-        message: 'Product retrieved'
+        message: 'Harvest retrieved'
       });
   } catch(err) {
     next(err);
@@ -44,7 +43,7 @@ router.post('/', auth, async function(req,res,next) {
     res.status(201)
       .json({
         data: createdHarvests,
-        message: 'Product created'
+        message: 'Harvest created'
       });
   } catch(err) {
     next(err);
@@ -55,14 +54,13 @@ router.post('/', auth, async function(req,res,next) {
 router.put('/:harvestId', auth, async function(req,res,next) {
   const { harvestId } = req.params;
   const { body: harvest } = req; //when send data
-  console.log('req', req);
 
   try {
-    const updatedHarvest = await harvestsService.updateHarvests({ harvestId, harvest });
+    const updatedHarvest = await harvestsService.updateHarvest({ harvestId, harvest });
     res.status(200)
       .json({
         data: updatedHarvest,
-        message: 'Product updated'
+        message: 'Harvest updated'
       });
   } catch(err){
     next(err);
@@ -72,14 +70,13 @@ router.put('/:harvestId', auth, async function(req,res,next) {
 //DELETE
 router.delete('/:harvestId', auth, async function(req,res,next) {
   const { harvestId } = req.params;
-  console.log('req', req);
-
+  const { user } = req;
   try {
-    const deletedHarvest = await harvestsService.deleteHarvests({ harvestId });
+    const deletedHarvest = await harvestsService.deleteHarvest({ harvestId, user });
     res.status(200)
       .json({
         data: deletedHarvest,
-        message: 'Product deleted'
+        message: 'Harvest deleted'
       });
     } catch(err) {
       next(err);

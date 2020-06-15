@@ -25,7 +25,6 @@ router.get('/', async function(req,res,next) {
 //GET BY ID
 router.get('/:productId', async function(req,res,next) {
   const { productId } = req.params;
-  console.log('req', req.params);
 
   try{
     const product = await productsService.getProduct({ productId });
@@ -42,7 +41,6 @@ router.get('/:productId', async function(req,res,next) {
 //POST
 router.post('/', async function(req,res,next) {
   const { body: product } = req; //when send data 
-  console.log('req', req.body);
 
   try {
     const createdProducts = await productsService.createProducts({ product });
@@ -60,7 +58,6 @@ router.post('/', async function(req,res,next) {
 router.put('/:productId', async function(req,res,next) {
   const { productId } = req.params;
   const { body: product } = req; //when send data
-  console.log('req', req);
 
   try {
     const updatedProduct = await productsService.updateProducts({ productId, product });
@@ -77,7 +74,6 @@ router.put('/:productId', async function(req,res,next) {
 //DELETE
 router.delete('/:productId', async function(req,res,next) {
   const { productId } = req.params;
-  console.log('req', req);
 
   try {
     const deletedProduct = await productsService.deleteProducts({ productId });

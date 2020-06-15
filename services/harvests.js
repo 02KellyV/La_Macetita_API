@@ -26,13 +26,13 @@ class HarvestsService {
 	}
 
 	//PUT
-	updateHarvests({ harvestId, harvest }) {
+	updateHarvest({ harvestId, harvest }) {
 		return Harvests.findByIdAndUpdate(harvestId, harvest);
 	}
 
 	//DELETE
-	async deleteHarvests({ harvestId, user }) {
-		const vari = await Users.findById(user._id);
+	async deleteHarvest({ harvestId, user }) {
+		const vari = await Users.findById(user.id);
 		vari.harvests = vari.harvests.filter(val => !val === harvestId)
 		await vari.save();
 		return await Harvests.findByIdAndDelete(harvestId);
