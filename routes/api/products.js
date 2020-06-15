@@ -4,6 +4,16 @@ const ProductsService = require('../../services/products');
 const productsService = new ProductsService();
 const auth = require("../../utils/guard");
 
+//UPLOAD 
+router.post('/upload', productsService.upload().array('photo',1), 
+  function (req, res, next) {
+    res.status(200)
+      .json({
+        data: req.files[0].location,
+        message: 'Photo uploaded'
+      });
+});
+
 //GET SEARCH
 router.get('/', async function(req,res,next) {
   let { search, page, limit } = req.query;
