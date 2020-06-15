@@ -10,7 +10,11 @@ class ProductsService {
     }
     const valid = await user.validPassword(password);
     if (valid) {
-      return { token: await user.generateJWT() };
+      return { 
+        token: await user.generateJWT(),
+        email: user.email,
+        id: user._id
+      };
     } else {
       return { error: "Password incorrect" };
     }
