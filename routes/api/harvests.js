@@ -4,7 +4,7 @@ const HarvestsService = require('../../services/harvests');
 const harvestsService = new HarvestsService();
 const auth = require("../../utils/guard");
 
-
+//GET
 router.get('/', async function(req,res,next) {
   try {
     const harvests = await harvestsService.getHarvests();
@@ -18,7 +18,7 @@ router.get('/', async function(req,res,next) {
   } 
 });
 
-
+//GET BY ID
 router.get('/:harvestId', async function(req,res,next) {
   const { harvestId } = req.params;
   console.log('req', req.params);
@@ -35,7 +35,7 @@ router.get('/:harvestId', async function(req,res,next) {
   }
 });
 
-
+//POST
 router.post('/', auth, async function(req,res,next) {
   const { body: harvest, user } = req; //when send data
 
@@ -51,8 +51,8 @@ router.post('/', auth, async function(req,res,next) {
   }
 });
 
-
-router.put('/:harvestId', async function(req,res,next) {
+//UPDATE
+router.put('/:harvestId', auth, async function(req,res,next) {
   const { harvestId } = req.params;
   const { body: harvest } = req; //when send data
   console.log('req', req);
@@ -69,8 +69,8 @@ router.put('/:harvestId', async function(req,res,next) {
   }
 });
 
-
-router.delete('/:harvestId', async function(req,res,next) {
+//DELETE
+router.delete('/:harvestId', auth, async function(req,res,next) {
   const { harvestId } = req.params;
   console.log('req', req);
 

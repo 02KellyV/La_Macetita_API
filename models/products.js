@@ -16,7 +16,7 @@ const productSchema = new mongoose.Schema({
         ref:'Harvest',
 	},
 	price: {
-		type: String		
+		type: Number		
 	},
 	category: {
 		type: mongoose.Schema.Types.ObjectId,

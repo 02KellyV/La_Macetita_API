@@ -1,9 +1,11 @@
-const {Products, Harvests, Users, Categories} = require('../models');
+const {Products, Harvests} = require('../models');
 
 class ProductsService {
 	constructor() {
 
 	}
+
+	//GET SEARCH
     getProductSearch({ search, page, limit }) {
 		return Products.find({$text: {$search: search}})
 		.populate("harvest")
@@ -11,6 +13,37 @@ class ProductsService {
 		.skip((page-1) * limit)
 		.limit(limit);
 	}
+
+	//GET BY ID
+	getProduct({ productId }) {
+		return Products.findById(productId)
+		.populate("harvest")
+		.populate("category");
+	}
+
+	//POST
+	async createProducts({ product }) {
+		const newProduct = await Products.create(product);
+		const updateHarvest = await Harvests.findById(product.harvest);
+		updateHarvest.products.push(newProduct._id);
+		await updateHarvest.save();
+		return newProduct;
+	}
+
+	//PUT
+	updateProducts({ productId, product }) {
+		return Products.findByIdAndUpdate(productId, product);
+	}
+
+	//DELETE
+	async deleteProducts({ productId }) {
+		const vari = await Harvests.findOne({products: productId});
+		vari.products =  vari.products.filter(val => !val === productId);
+		await vari.save();
+		return await Products.findByIdAndDelete(productId);
+	}
+
+	/* HARDCODE
 	async createProduct(){
 		const category = await Categories.create({
 			name: "Frutos Secos",
@@ -34,7 +67,7 @@ class ProductsService {
 			category: category._id,
 			photo: "https://comefruta.es/wp-content/uploads/2014/05/frutos-secos-variados.jpg"
 		});
-	}
+	}*/
 }
 
 module.exports = ProductsService;

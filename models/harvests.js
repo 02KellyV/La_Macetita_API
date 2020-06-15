@@ -18,6 +18,10 @@ const harvestSchema = new mongoose.Schema({
 	location: {
 		type: String		
 	},
+	products: [{
+		type: mongoose.Schema.Types.ObjectId,
+		ref: 'Product'
+	}],
 }, {
 	timestamps: true
 });

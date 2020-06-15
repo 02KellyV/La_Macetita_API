@@ -21,7 +21,7 @@ class HarvestsService {
 		const newHarvest = await Harvests.create(harvest);
 		const updateUser = await Users.findById(user.id);
 		updateUser.harvests.push(newHarvest._id);
-		updateUser.save();
+		await updateUser.save();
 		return newHarvest;
 	}
 
@@ -31,8 +31,11 @@ class HarvestsService {
 	}
 
 	//DELETE
-	deleteHarvests({ harvestId }) {
-		return Harvests.findByIdAndDelete(harvestId);
+	async deleteHarvests({ harvestId, user }) {
+		const vari = await Users.findById(user._id);
+		vari.harvests = vari.harvests.filter(val => !val === harvestId)
+		await vari.save();
+		return await Harvests.findByIdAndDelete(harvestId);
 	}
 }
 
