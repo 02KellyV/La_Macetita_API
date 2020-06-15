@@ -22,7 +22,12 @@ class ProductsService {
     await user.setPassword(password);
     user.save();
 
-    return { token: await user.generateJWT() };
+    return { 
+      token: await user.generateJWT(),
+      name: user.name,
+      email: user.email,
+      id: user._id
+    };
   }
 }
 
