@@ -2,7 +2,9 @@ const express = require("express");
 const router = express.Router();
 const ProductsService = require("../../services/products");
 const productsService = new ProductsService();
+const auth = require("../../utils/guard");
 
+//GET SEARCH
 router.get("/", async function (req, res, next) {
   let { search, page, limit } = req.query;
   page = Number(page);
@@ -21,18 +23,31 @@ router.get("/", async function (req, res, next) {
   } catch (err) {
     next(err);
   }
-  //const { tags } = req.query;
-  //productsService.createProduct();
 });
 
-router.get("/:harvestId", async function (req, res, next) {
-  const { harvestId } = req.params;
-  console.log("req", req.params);
+//GET ME
+router.get("/me", auth, async function (req, res, next) {
+  const { user } = req; //when send data
 
   try {
-    const harvest = await harvestsService.getHarvest({ harvestId });
+    const products = await productsService.getProductsMe({ user });
+    res.status(201).json({
+      data: products,
+      message: "Products listed",
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+//GET BY ID
+router.get("/:productId", async function (req, res, next) {
+  const { productId } = req.params;
+
+  try {
+    const product = await productsService.getProduct({ productId });
     res.status(200).json({
-      data: harvest,
+      data: product,
       message: "Product retrieved",
     });
   } catch (err) {
@@ -40,14 +55,26 @@ router.get("/:harvestId", async function (req, res, next) {
   }
 });
 
-router.post("/", async function (req, res, next) {
-  const { body: harvest } = req; //when send data
-  console.log("req", req.body);
+//UPLOAD
+router.post("/upload", productsService.upload().array("photo", 1), function (
+  req,
+  res,
+  next
+) {
+  res.status(200).json({
+    data: req.files[0].location,
+    message: "Photo uploaded",
+  });
+});
+
+//POST
+router.post("/", auth, async function (req, res, next) {
+  const { body: product } = req; //when send data
 
   try {
-    const createdHarvests = await harvestsService.createHarvests({ harvest });
+    const createdProducts = await productsService.createProducts({ product });
     res.status(201).json({
-      data: createdHarvests,
+      data: createdProducts,
       message: "Product created",
     });
   } catch (err) {
@@ -55,18 +82,18 @@ router.post("/", async function (req, res, next) {
   }
 });
 
-router.put("/:harvestId", async function (req, res, next) {
-  const { harvestId } = req.params;
-  const { body: harvest } = req; //when send data
-  console.log("req", req);
+//UPDATE
+router.put("/:productId", auth, async function (req, res, next) {
+  const { productId } = req.params;
+  const { body: product } = req; //when send data
 
   try {
-    const updatedHarvest = await harvestsService.updateHarvests({
-      harvestId,
-      harvest,
+    const updatedProduct = await productsService.updateProducts({
+      productId,
+      product,
     });
     res.status(200).json({
-      data: updatedHarvest,
+      data: updatedProduct,
       message: "Product updated",
     });
   } catch (err) {
@@ -74,14 +101,14 @@ router.put("/:harvestId", async function (req, res, next) {
   }
 });
 
-router.delete("/:harvestId", async function (req, res, next) {
-  const { harvestId } = req.params;
-  console.log("req", req);
+//DELETE
+router.delete("/:productId", auth, async function (req, res, next) {
+  const { productId } = req.params;
 
   try {
-    const deletedHarvest = await harvestsService.deleteHarvests({ harvestId });
+    const deletedProduct = await productsService.deleteProducts({ productId });
     res.status(200).json({
-      data: deletedHarvest,
+      data: deletedProduct,
       message: "Product deleted",
     });
   } catch (err) {

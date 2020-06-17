@@ -19,11 +19,15 @@ const userSchema = new mongoose.Schema(
       index: true,
       trim: true,
     },
+    harvests: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Harvest"
+    }],
     salt: String,
     hash: String,
   },
   {
-    timestamps: true,
+   timestamps: true,
   }
 );
 

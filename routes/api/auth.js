@@ -7,15 +7,18 @@ router.post("/signin", async function (req, res, next) {
   let { email, password } = req.body;
 
   try {
-    const { token, error } = await authService.signin({ email, password });
-    if (token) {
+    const response = await authService.signin({
+      email,
+      password
+    });
+    if (response.token) {
       res.status(200).json({
-        data: token,
-        message: "User loged",
+        data: response,
+        message: "User logged",
       });
     } else {
       res.status(400).json({
-        message: error,
+        message: response.error,
       });
     }
   } catch (err) {
@@ -27,19 +30,18 @@ router.post("/signup", async function (req, res, next) {
   let { name, email, password } = req.body;
 
   try {
-    const { token, error } = await authService.signup({
+    const response = await authService.signup({
       name,
       email,
       password,
     });
-    if (token) {
+    if (response.token) {
       res.status(200).json({
-        data: token,
+        data: response,
         message: "Registered user",
       });
     } else {
       res.status(400).json({
-        message: error,
       });
     }
   } catch (err) {

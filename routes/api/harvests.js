@@ -2,86 +2,81 @@ const express = require('express');
 const router = express.Router();
 const HarvestsService = require('../../services/harvests');
 const harvestsService = new HarvestsService();
+const auth = require("../../utils/guard");
 
+//GET
 router.get('/', async function(req,res,next) {
-  const { tags } = req.query;
-  console.log('req', req.query);
-
   try {
-    const harvests = await harvestsService.getHarvests({ tags });
+    const harvests = await harvestsService.getHarvests();
     res.status(200)
       .json({
         data: harvests,
-        message: 'Products listed'
+        message: 'Harvests listed'
       });
   } catch(err) {
     next(err);
   } 
 });
 
-
+//GET BY ID
 router.get('/:harvestId', async function(req,res,next) {
   const { harvestId } = req.params;
-  console.log('req', req.params);
 
   try{
     const harvest = await harvestsService.getHarvest({ harvestId });
     res.status(200)
       .json({
         data: harvest,
-        message: 'Product retrieved'
+        message: 'Harvest retrieved'
       });
   } catch(err) {
     next(err);
   }
 });
 
-
-router.post('/', async function(req,res,next) {
-  const { body: harvest } = req; //when send data 
-  console.log('req', req.body);
+//POST
+router.post('/', auth, async function(req,res,next) {
+  const { body: harvest, user } = req; //when send data
 
   try {
-    const createdHarvests = await harvestsService.createHarvests({ harvest });
+    const createdHarvests = await harvestsService.createHarvests({ harvest, user });
     res.status(201)
       .json({
         data: createdHarvests,
-        message: 'Product created'
+        message: 'Harvest created'
       });
   } catch(err) {
     next(err);
   }
 });
 
-
-router.put('/:harvestId', async function(req,res,next) {
+//UPDATE
+router.put('/:harvestId', auth, async function(req,res,next) {
   const { harvestId } = req.params;
   const { body: harvest } = req; //when send data
-  console.log('req', req);
 
   try {
-    const updatedHarvest = await harvestsService.updateHarvests({ harvestId, harvest });
+    const updatedHarvest = await harvestsService.updateHarvest({ harvestId, harvest });
     res.status(200)
       .json({
         data: updatedHarvest,
-        message: 'Product updated'
+        message: 'Harvest updated'
       });
   } catch(err){
     next(err);
   }
 });
 
-
-router.delete('/:harvestId', async function(req,res,next) {
+//DELETE
+router.delete('/:harvestId', auth, async function(req,res,next) {
   const { harvestId } = req.params;
-  console.log('req', req);
-
+  const { user } = req;
   try {
-    const deletedHarvest = await harvestsService.deleteHarvests({ harvestId });
+    const deletedHarvest = await harvestsService.deleteHarvest({ harvestId, user });
     res.status(200)
       .json({
         data: deletedHarvest,
-        message: 'Product deleted'
+        message: 'Harvest deleted'
       });
     } catch(err) {
       next(err);
