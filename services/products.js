@@ -13,12 +13,11 @@ class ProductsService {
     this.s3 = new aws.S3();
   }
 
-  getProductsMe({ user }) {
-    return Products.find()
+  async getProductsMe({ user }) {
+    const harvest = await Harvests.find({ owner: user.id });
+    return await Products.find({ harvest: harvest._id })
       .populate("harvest")
-      .populate("category")
-      .where("harvest.owner")
-      .equals(user.id);
+      .populate("category");
   }
 
   upload() {
